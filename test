@@ -1,3 +1,10 @@
 First
 Second
 third
+<<<<<<< HEAD
+||||||| parent of 97f2bfc... fifth to check cherry
+fourth
+=======
+fourth
+Fifth
+>>>>>>> 97f2bfc... fifth to check cherry
