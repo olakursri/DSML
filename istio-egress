@@ -1,1 +1,6 @@
+#Istio-Egress Setup
 https://cloud.google.com/service-mesh/docs/security/egress-gateway-gke-tutorial
+#Generic Istio Operator Scope
+https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/
+#In-cluster SM Install
+https://cloud.google.com/service-mesh/docs/onboarding/kubernetes-off-gcp/install/install-in-cluster-cloud-service-mesh
