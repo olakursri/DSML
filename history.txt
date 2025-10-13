@@ -1,0 +1,528 @@
+    1  ls -lrt
+    2  gcloud auth login
+    3  kubectl apply --recursive --filename egressgateway/
+    4  ls -lrt
+    5  gcloud anthos auth login 
+    6  gcloud components list
+    7  gcloud components install anthos-auth
+    8  kubectl config view --minify
+    9  gcloud config set account olakur.r.srinath@sabb.com
+   10  gcloud container clusters get-credentials edmzc-sit --zone me-centra2-a --project gcpd-prj-svc-edmz-sit
+   11  gcloud container clusters get-credentials edmzc-sit --location me-centra2-a --project gcpd-prj-svc-edmz-sit
+   12  gcloud container clusters get-credentials edmzc-sit --location me-centra2 --project gcpd-prj-svc-edmz-sit
+   13  gcloud container clusters list --project gcpd-prj-svc-edmz-sit
+   14  gcloud projects get-iam-policy gcpd-prj-svc-edmz-sit --flatten="bindings[].members" --filter="bindings.members:olakur.r.srinath@sabb.com"
+   15  kubectl auth can-i create roles --namespace=istio-egress
+   16  kubectl config view --minify -o jsonpath='{.users[0].user.auth-provider.config.id-token}' | cut -d '.' -f2 | base64 -d
+   17  user:
+   18  kubectl config view --minify
+   19  gcloud auth login --no-launch-browser
+   20  gcloud config set account olakur.r.srinath@sabb.com
+   21  gcloud container clusters get-credentials edmzc-sit --zone me-central2-a --project gcpd-prj-svc-edmz-sit
+   22  cat ~/.kube/config 
+   23  kubectl apply --recursive --filename egressgateway/
+   24  kubectl get all -n istio-egress
+   25  kubectl describe pod istio-egressgateway-79d76bc5f9-8mpj2 -n istio-egress
+   26  kubectl get all -n istio-egress
+   27  kubectl edit deployment.apps/istio-egressgatewa -n istio-egress
+   28  kubectl edit deployment.apps/istio-egressgateway -n istio-egress
+   29  kubectl get nodes
+   30  kubectl label node gke-edmzc-sit-default-pool-7b711e4a-zgd2 cloud.google.com/gke-nodepool=gateway
+   31  kubectl label node gke-edmzc-sit-nap-e2-highmem-4-1k3uxu-c4651ca6-2cd2 cloud.google.com/gke-nodepool=gateway
+   32  kubectl get deploy -n istio-egress
+   33  kubectl get nodes
+   34  kubectl scale deploy istio-egressgateway -n istio-egress --replica=0
+   35  kubectl scale deploy istio-egressgateway -n istio-egress --replicas=0
+   36  kubectl get pods -n istio-egress
+   37  kubectl get nodes
+   38  kubectl describe node gke-edmzc-sit-npool-egress-gateway-ad2366f5-xlqt
+   39  kubectl scale deploy istio-egressgateway -n istio-egress --replicas=1
+   40  kubectl get pods -n istio-egress
+   41  kubectl get svc -n istio-egress
+   42  kubectl get io -n istio-egress
+   43  kubectl get all -n istio-egress
+   44  ls -lrt
+   45  cd egressgateway/
+   46  ls -lrt
+   47  cd Base/Pilot/EgressGateways/
+   48  ls -lrt
+   49  vi EgressGateways.yaml 
+   50  pwd
+   51  cd $HOME
+   52  kubectl get io -n istio-system
+   53  kubectl get io -A
+   54  ls =lrt
+   55  ls -lrt
+   56  vi peer-authentication.yaml
+   57  ./peer-authentication.yaml
+   58  sudo ./peer-authentication.yaml
+   59  ls -lrt
+   60  vi peer-authentication.yaml 
+   61  kubectl apply -f peer-authentication.yaml 
+   62  kubectl get peerauthentication -A
+   63  kubectl create namespace team-x
+   64  kubectl create namespace team-y
+   65  kubectl label namespace team-x team=x
+   66  kubectl label namespace team-y team=y
+   67  kubectl label ns team-x istio.io/rev- istio-injection=enabled --overwrite
+   68  kubectl label ns team-y istio.io/rev- istio-injection=enabled --overwrite
+   69  vi test-app.yaml
+   70  kubectl apply -f test-app.yaml -n team-x
+   71  kubectl -n team-x get po -l app=test -o wide
+   72  kubectl describe namespace team-x
+   73  kubectl describe namespace istio-gw
+   74  kubectl edit namespace  team-x
+   75  kubectl -n team-x get po -l app=test -o wide
+   76  kubectl rollout restart deploy test -n team-x
+   77  kubectl -n team-x get po -l app=test -o wide
+   78  kubectl edit namespace  team-x
+   79  kubectl get mutatingwebhookconfiguration istio-revision-tag-asm-1208-10 -o yaml
+   80  kubectl get mutatingwebhookconfiguration
+   81  kubectl edit mutatingwebhookconfiguration istio-sidecar-injector-asm-1208-10
+   82  kubectl label namespace team-x istio-injection-
+   83  kubectl rollout restart deploy test -n team-x
+   84  kubectl -n team-x get po -l app=test -o wide
+   85  kubectl -n team-x exec -it     $(kubectl -n team-x get pod -l app=test -o jsonpath={.items..metadata.name})     -c test -- curl -v http://example.com
+   86  ${ISTIOCTL} pc c $(kubectl -n team-x get pod -l app=test \
+   87      -o jsonpath={.items..metadata.name}).team-x --direction outbound
+   88  echo $ISTIOCTL
+   89  export ISTIOCTL=/home/olakur_r_srinath_sabb_com/google-cloud-sdk/bin/istioctl
+   90  echo $ISTIOCTL
+   91  ${ISTIOCTL} pc c $(kubectl -n team-x get pod -l app=test \
+   92      -o jsonpath={.items..metadata.name}).team-x --direction outbound
+   93  vi sidecar_register_only.yaml
+   94  kubectl apply -f sidecar_register_only.yaml
+   95  ${ISTIOCTL} pc c $(kubectl -n team-x get pod -l app=test \
+   96      -o jsonpath={.items..metadata.name}).team-x --direction outbound
+   97  vi team-x-istio-egress.yaml
+   98  kubectl apply -f team-x-istio-egress.yaml 
+   99  ${ISTIOCTL} analyze -n istio-egress --revision asm-1208-10
+  100  kubectl get svc -n team-x
+  101  kubectl get svc -n istio-egress
+  102  ${ISTIOCTL} analyze -n istio-egress --revision asm-1208-10
+  103  for i in {1..4}; do     kubectl -n team-x exec -it $(kubectl -n team-x get pod -l app=test \
+  104          -o jsonpath={.items..metadata.name}) -c test --     curl -s -o /dev/null -w "%{http_code}\n" http://example.com; done
+  105  kubectl -n team-x logs -f $(kubectl -n team-x get pod -l app=test \
+  106      -o jsonpath={.items..metadata.name}) istio-proxy
+  107  kubectl logs -l app=istio-egressgateway -n istio-egress
+  108  ${ISTIOCTL} analyze -n istio-egress --revision asm-1208-10
+  109  kubectl get gateway -n istio-egress
+  110  kubectl get gateway egress-gateway -n istio-egress
+  111  kubectl get gateway egress-gateway -n istio-egress -oyaml
+  112  kubectl edit deploy -n istio-egress
+  113  kubectl get pods -n istio-egress
+  114  ${ISTIOCTL} analyze -n istio-egress --revision asm-1208-10
+  115  kubectl get gateway egress-gateway -n istio-egress
+  116  kubectl get gateway egress-gateway -n istio-egress -oyaml
+  117  kubectl get pods -l istio=egressgateway -n istio-egress
+  118  for i in {1..4}; do     kubectl -n team-x exec -it $(kubectl -n team-x get pod -l app=test \
+  119          -o jsonpath={.items..metadata.name}) -c test --     curl -s -o /dev/null -w "%{http_code}\n" http://example.com; done
+  120  kubectl logs -l app=istio-egressgateway -n istio-egress
+  121  kubectl get pods -n istio-egress
+  122  kubectl -n team-x logs -f $(kubectl -n team-x get pod -l app=test \
+  123      -o jsonpath={.items..metadata.name}) istio-proxy
+  124  kubectl get pods -n team-x
+  125  kubectl logs test-9f8c8b95-8k9jv -c istio-proxy -n team-x
+  126  kubectl logs -f test-9f8c8b95-8k9jv -c istio-proxy -n team-x
+  127  kubectl logs -f test-9f8c8b95-8k9jv -c test -n team-x
+  128  kubectl get pods -n team-x
+  129  kubectl get svc -n team-x
+  130  kubectl rollout restart deploy test -n team-x
+  131  kubectl get pods -n team-x
+  132  kubectl get svc -l istio=egressgateway -n istio-egress
+  133  kubectl edit svc -l istio=egressgateway -n istio-egress
+  134  kubectl edit svc istio-egressgateway -n istio-egress
+  135  kubectl edit gateway -n istio-egress
+  136  ${ISTIOCTL} analyze -n istio-egress --revision asm-1208-10
+  137  kubectl get svc -n istio-egress
+  138  kubectl edit deploy -n istio-egress
+  139  kubectl edit svc -n istio-egress
+  140  kubectl get svc -n istio-egress
+  141  ${ISTIOCTL} analyze -n istio-egress --revision asm-1208-10
+  142  kubectl -n team-x logs -f $(kubectl -n team-x get pod -l app=test \
+  143      -o jsonpath={.items..metadata.name}) istio-proxy
+  144  kubectl edit svc -n istio-egress
+  145  kubectl edit gateway -n istio-egress
+  146  ${ISTIOCTL} analyze -n istio-egress --revision asm-1208-10
+  147  kubectl -n team-x logs -f $(kubectl -n team-x get pod -l app=test \
+  148      -o jsonpath={.items..metadata.name}) istio-proxy
+  149  kubectl -n istio-egress logs -f $(kubectl -n istio-egress get pod -l istio=egressgateway \
+  150      -o jsonpath="{.items[0].metadata.name}") istio-proxy
+  151  kubectl get deploy -n istio-egress
+  152  istioctl pc log deploy/istio-egressgateway -n istio-egress --level=debug
+  153  kubectl edit gateway -n istio-egress
+  154  kubectl logs -f -l app=istio-egressgateway -n istio-egress 
+  155  kubectl get pods -n team-x
+  156  kubectl logs -f -l app=istio-egressgateway -n istio-egress 
+  157  gcloud version
+  158  kubectl version
+  159  snap install kubectl
+  160  sudo snap install kubectl
+  161  sudo snap install kubectl --classic
+  162  gcloud components list
+  163  snap install istioctl
+  164  sudo snap install istioctl
+  165  gcloud components install istioctl
+  166  sudo snap install istioctl --classic
+  167  snap
+  168  snap find istio
+  169  snap install devoperator
+  170  sudo snap install devoperator
+  171  sudo snap install devoperator --classic
+  172  snap find gcloud
+  173  istioctl version
+  174  ls -lrt
+  175  cd snap/
+  176  ls -lrt
+  177  cd google-cloud-cli/
+  178  ls -lrt
+  179  cd common/
+  180  ls -lrt
+  181  cd ../..
+  182  cd ..
+  183  kubectl version
+  184  curl -L https://istio.io/downloadIstio | sh -
+  185  gkectl 
+  186  gkectl version
+  187  gcloud components install gkectl
+  188  sudo snap install gkectl
+  189  cd istio-*/bin
+  190  sudo mv istioctl /usr/local/bin/
+  191  ls -lrt
+  192  cd ../..
+  193  istioctl version
+  194  gcloud init
+  195  gcloud container clusters get-credentials edmzc-sit --region=me-central2-a
+  196  gke-gcloud-auth-plugin --version
+  197  sudo gke-gcloud-auth-plugin --version
+  198  sudo gcloud components install gke-gcloud-auth-plugin
+  199  sudo snap install gke-gcloud-auth-plugin
+  200  snap find gke
+  201  snap find "gke"
+  202  ls -lt
+  203  cat ~/.kube/config 
+  204  kubectl get ns
+  205  curl -LO https://github.com/GoogleCloudPlatform/gke-gcloud-auth-plugin/releases/latest/download/gke-gcloud-auth-plugin_linux_amd64
+  206  ls -lrt
+  207  chmod +x gke-gcloud-auth-plugin_linux_amd64
+  208  sudo mv gke-gcloud-auth-plugin_linux_amd64 /usr/local/bin/gke-gcloud-auth-plugin
+  209  gke-gcloud-auth-plugin --version
+  210  curl -LO https://github.com/GoogleCloudPlatform/gke-gcloud-auth-plugin/releases/latest/download/gke-gcloud-auth-plugin_linux_amd64
+  211  ls -lrt
+  212  gcloud components install gke-gcloud-auth-plugin
+  213  curl -LO https://storage.googleapis.com/gke-gcloud-auth-plugin/latest/linux_amd64/gke-gcloud-auth-plugin
+  214  ls -lrt
+  215  chmod +x gke-gcloud-auth-plugin
+  216  sudo mv gke-gcloud-auth-plugin /usr/local/bin/
+  217  gke-gcloud-auth-plugin --version
+  218  sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+  219  sudo yum install google-cloud-sdk-gke-gcloud-auth-plugin
+  220  sudo snap install google-cloud-sdk-gke-gcloud-auth-plugin
+  221  gcloud components list
+  222  gcloud components install istioctl
+  223  ls -lrt
+  224  cd snap/
+  225  ls -lrt
+  226  cd google-cloud-cli/
+  227  ls -lrt
+  228  cd ..
+  229  cd .
+  230  cd ..
+  231  ls -lrt
+  232  which gcloud
+  233  sudo snap uninstall gcloud
+  234  sudo snap remove gcloud
+  235  snap find gcloud
+  236  curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz
+  237  ls -lrt
+  238  tar -xf google-cloud-cli-linux-x86_64.tar.gz
+  239  ./google-cloud-sdk/install.sh
+  240  gcloud components install istioctl
+  241  snap --help
+  242  snap list
+  243  sudo snap remove google-cloud-cli --classic
+  244  sudo snap remove google-cloud-cli
+  245  sudo snap remove kubectl
+  246  sudo snap remove devoperator
+  247  gcloud version
+  248  ls -lrt
+  249  ./google-cloud-sdk/install.sh
+  250  gcloud components update
+  251  ls -lrt
+  252  cd google-cloud-sdk/
+  253  ls -lrt
+  254  cd bin/
+  255  ls -lrt
+  256  cp gcloud /snap/bin/gcloud
+  257  sudo cp gcloud /snap/bin/gcloud
+  258  gcloud version
+  259  ./gcloud version
+  260  ./gcloud components install istioctl
+  261  rm -f /usr/local/bin/istioctl
+  262  sudo rm -f /usr/local/bin/istioctl
+  263  sudo rm -f /snap/bin/gcloud
+  264  istioctl version
+  265  ./gcloud components install istioctl
+  266  ls -lrt
+  267  ./istioctl version
+  268  ./gcloud components install gke-gcloud-auth-plugin
+  269  rm -f /usr/local/bin/gke-gcloud-auth-plugin
+  270  sudo rm -f /usr/local/bin/gke-gcloud-auth-plugin
+  271  ls -lrt
+  272  cp ./gcloud /usr/local/bin
+  273  sudo cp ./gcloud /usr/local/bin
+  274  gcloud version
+  275  sudo cp ./gcloud /snap/bin/local
+  276  gcloud version
+  277  ls -lrt /snap/binl
+  278  ls -lrt /snap/bin/
+  279  cd local
+  280  sudo cp ./gcloud /snap/bin/gcloud
+  281  gcloud version
+  282  ls -lrt
+  283  ls -lrt /snap/bin
+  284  chmod 777 gcloud
+  285  ls -lrt
+  286  cd /snap/bin
+  287  ls -lrt
+  288  chmod 777 gcloud
+  289  sudo chmod 777 gcloud
+  290  ls -lrt
+  291  ./gcloud version
+  292  cd ~/google-cloud-sdk/bin
+  293  ls -lrt 
+  294  sudo cp * /usr/local/bin
+  295  gcloud version
+  296  rm -f /snap/bin/gcloud
+  297  sudo rm -f /snap/bin/gcloud
+  298  sudo rm -f /snap/bin/local
+  299  sudo cp -r * /snap/bin/
+  300  ls -lrt /snap/bin
+  301  istioctl version
+  302  gcloud version
+  303  gsutil version
+  304  cd ..
+  305  ls -lrt
+  306  cd ..
+  307  ls -lrt
+  308  cd google-cloud-sdk/
+  309  ls -lrt
+  310  cd bin/
+  311  ls -lrt
+  312  kubectl get ns
+  313  ./gcloud components install kubectl
+  314  ls -lrt
+  315  ./kubectl.1.34 get ns
+  316  cd ..
+  317  ls -lrt
+  318  cd ..
+  319  sudo cp -r google-cloud-sdk/ /usr/local/bin
+  320  kubectl.1.34 get ns
+  321  cd google-cloud-sdk/bin/
+  322  ./kubectl.1.34 get ns
+  323  which python3
+  324  python3 --version
+  325  cd ..
+  326  ./install.sh
+  327  cd ..
+  328  ls -lrta
+  329  sudo ln -s ~/google-cloud-sdk/bin/gcloud /usr/local/bin/gcloud
+  330  cd /usr/local/bin
+  331  ls -lrt
+  332  rm -rf google-cloud-sdk
+  333  sudo rm -rf google-cloud-sdk
+  334  ls -lrt
+  335  clear
+  336  ls -lrt
+  337  which gcloud
+  338  which kubectl 
+  339  which istioctl
+  340  istioctl version
+  341  gcloud version
+  342  rm -f /snp/lib/gcloud.py
+  343  gcloud version
+  344  sudo rm -f  /snap/lib/gcloud.py
+  345  gcloud version
+  346  echo $PATH
+  347  bq version
+  348  cd $HOME
+  349  ls -lrt
+  350  cd google-cloud-sdk/
+  351  ls -lrt
+  352  cd lib/
+  353  ls -lrt
+  354  cp gcloud.py /usr/local/bin
+  355  sudo cp gcloud.py /usr/local/bin
+  356  sudo cp gcloud.py /snap/bin
+  357  ls -lrt
+  358  gcloud version
+  359  sudo cp gcloud.py /snap/lib/gcloud.py
+  360  sudo cp gcloud.py /snap/lib/
+  361  gcloud version
+  362  sudo cp gcloud.py /usr/local/lib/
+  363  gcloud version
+  364  which python
+  365  which python3
+  366  python3 version
+  367  cd $HOME
+  368  python3 version
+  369  cd /usr/bin/
+  370  ls -lrt
+  371  ls -lrt |grep python
+  372  gcloud version
+  373  cd $HOME
+  374  ls -lrt
+  375  cp -r google-cloud-sdk/ /usr/local/lib/
+  376  sudo cp -r google-cloud-sdk/ /usr/local/lib/
+  377  gcloud version
+  378  cd google-cloud-sdk/
+  379  gcloud version
+  380  sudo rm /usr/local/bin/gcloud
+  381  sudo rm /usr/local/bin/gke-gcloud-auth-plugin
+  382  sudo rm /usr/local/bin/docker-credential-gcloud
+  383  sudo rm /usr/local/bin/git-credential-gcloud.sh
+  384  sudo rm /usr/local/lib/gcloud.py
+  385  export CLOUDSDK_PYTHON=/usr/bin/python3
+  386  cd ..
+  387  cd google-cloud-sdk/
+  388  ls -lrt
+  389  cd bin
+  390  cd ..
+  391  cd lib/
+  392  ls -lrt
+  393  cd googlecloudsdk/
+  394  ls -lrt
+  395  cd ..
+  396  sudo cp -r * /usr/local/lib/
+  397  cp *  /usr/local/lib/
+  398  cd ..
+  399  cd bin
+  400  ls -lrt
+  401  cp -r * /usr/local/bin
+  402  sudo cp -r * /usr/local/bin
+  403  cd ..
+  404  ls -lrt
+  405  cd rpm
+  406  ls -lrt
+  407  cd map
+  408  cd mapping/
+  409  ls -lrt
+  410  cd /usr/local/rpm
+  411  cd ..
+  412  gcloud version
+  413  cd ..
+  414  kubectl version
+  415  istioctl version
+  416  kubectl get ns
+  417  kubectl get nodes
+  418  kubectl get pods -n istio-gw
+  419  kubectl get pods -n istio-system
+  420  kubectl apply -n istio-system -f https://raw.githubusercontent.com/istio/istio/1.20.8/samples/egress/istio-egressgateway.yaml
+  421  kubectl get deploy -n istio-system -l app=istiod -o    jsonpath={.items[*].metadata.labels.'istio\.io\/rev'}'{"\n"}'
+  422  istioctl version
+  423  ISTIOCTL=$(find "$(pwd -P)" -name istioctl)
+  424  echo "ISTIOCTL=\"${ISTIOCTL}\"" >> ./init-egress-tutorial.sh
+  425  ls -lrt
+  426  vi init-egress-tutorial.sh 
+  427  which istioctl
+  428  vi init-egress-tutorial.sh 
+  429  vi init-egress-tutorial.sh 
+  430  ${ISTIOCTL} manifest generate     --filename egressgateway-operator.yaml     --output egressgateway     --cluster-specific
+  431  ${ISTIOCTL} manifest generate     --filename egressgateway-operator.yaml     --output egressgateway     --cluster-specific
+  432  echo $ISTIOCTL
+  433  ls -lrt
+  434  vi egressgateway-operator.yaml
+  435  ls -lrt
+  436  ${ISTIOCTL} manifest generate     --filename egressgateway-operator.yaml     --output egressgateway     --cluster-specific
+  437  ls -lrt
+  438  cd egressgateway/
+  439  ls -lrt
+  440  cd Base/
+  441  ls -lrt
+  442  cd Pilot/
+  443  ls -lrt
+  444  cd EgressGateways/
+  445  ls -lrt
+  446  vi EgressGateways.yaml 
+  447  cd ../..
+  448  ls -lrt
+  449  vi egressgateway-operator.yaml 
+  450  kubectl create namespace istio-egress
+  451  kubectl label namespace istio-egress     istio-injection- istio.io/rev=asm-1208-10 --overwrite
+  452  ISTIOCTL=$(find "$(pwd -P)" -name istioctl)
+  453  echo "ISTIOCTL=\"${ISTIOCTL}\"" >> ./init-egress-tutorial.sh
+  454  ${ISTIOCTL} manifest generate     --filename egressgateway-operator.yaml     --output egressgateway     --cluster-specific
+  455  ls -lrt
+  456  rm -f init-egress-tutorial.sh 
+  457  rm -rf egressgateway
+  458  vi egressgateway-operator.yaml 
+  459  ISTIOCTL=$(find "$(pwd -P)" -name istioctl)
+  460  echo "ISTIOCTL=\"${ISTIOCTL}\"" >> ./init-egress-tutorial.sh
+  461  ${ISTIOCTL} manifest generate     --filename egressgateway-operator.yaml     --output egressgateway     --cluster-specific
+  462  cat egressgateway/Base/Pilot/EgressGateways/EgressGateways.yaml
+  463  kubectl apply --recursive --filename egressgateway/
+  464  kubectl get pods 
+  465  kubectl get pods  -n istio-egress
+  466  gcloud init
+  467  gcloud config list
+  468  ls -lrt
+  469  cd egressgateway/
+  470  ls -lrt
+  471  cd Base/
+  472  ls -lrt
+  473  cd Ba
+  474  vi Base.yaml 
+  475  cd Pilot/
+  476  ls -lrt
+  477  cd EgressGateways/
+  478  ls -lrt
+  479  vi EgressGateways.yaml 
+  480  cd ../../../..
+  481  kubectl auth can-i create roles --namespace=istio-egress --as=115796537234340159548
+  482  vi rback.yaml
+  483  kubectl apply -f rback.yaml 
+  484  kubectl get clusterrolebining |grep admin
+  485  kubectl get clusterrole |grep admin
+  486  kubectl get clusterrolebinding
+  487  kubectl auth can-i create clusterrolebindings --as=olakur.r.srinath
+  488  kubectl get clusterrolebinding olakur.r.srinath-cluster-admin-binding -oyaml
+  489  gcloud auth login --no-launch-browser
+  490  gcloud config set account olakur.r.srinath@sabb.com
+  491  gcloud auth login --no-launch-browser
+  492  gcloud config account list
+  493  gcloud config set account olakur.r.srinath@sabb.com
+  494  gcloud config  list
+  495  kubectl apply --recursive --filename egressgateway/
+  496  gcloud auth list
+  497  gcloud config list account
+  498  gcloud config set account olakur.r.srinath@sabb.com
+  499  kubectl apply --recursive --filename egressgateway/
+  500  gcloud config list account
+  501  gcloud auth list
+  502  kubectl apply --recursive --filename egressgateway/
+  503  echo $ISTIOCTL
+  504  for i in {1..4}; do     kubectl -n team-x exec -it $(kubectl -n team-x get pod -l app=test \
+  505          -o jsonpath={.items..metadata.name}) -c test --     curl -s -o /dev/null -w "%{http_code}\n" http://example.com; done
+  506  for i in {1..4}; do     kubectl -n team-x exec -it $(kubectl -n team-x get pod -l app=test \
+  507          -o jsonpath={.items..metadata.name}) -c test --     curl -s -o /dev/null -w "%{http_code}\n" http://example.com; done
+  508  istioctl analyze -n istio-egress
+  509  for i in {1..4}; do     kubectl -n team-x exec -it $(kubectl -n team-x get pod -l app=test \
+  510          -o jsonpath={.items..metadata.name}) -c test --     curl -s -o /dev/null -w "%{http_code}\n" http://example.com; done
+  511  for i in {1..4}; do     kubectl -n team-x exec -it $(kubectl -n team-x get pod -l app=test \
+  512          -o jsonpath={.items..metadata.name}) -c test --     curl -s -o /dev/null -w "%{http_code}\n" http://example.com; done
+  513  for i in {1..4}; do     kubectl -n team-x exec -it $(kubectl -n team-x get pod -l app=test \
+  514          -o jsonpath={.items..metadata.name}) -c test --     curl -s -o /dev/null -w "%{http_code}\n" http://example.com; done
+  515  for i in {1..4}; do     kubectl -n team-x exec -it $(kubectl -n team-x get pod -l app=test \
+  516          -o jsonpath={.items..metadata.name}) -c test --     curl -s -o /dev/null -w "%{http_code}\n" http://example.com; done
+  517  for i in {1..4}; do     kubectl -n team-x exec -it $(kubectl -n team-x get pod -l app=test \
+  518          -o jsonpath={.items..metadata.name}) -c test --     curl -s -o /dev/null -w "%{http_code}\n" http://example.com; done
+  519  kubectl exec test-5cf459ccbf-gt57f -n istio-egress -- curl -s -o /dev/null -w "%{http_code}\n" http://example.com
+  520  kubectl exec test-5cf459ccbf-gt57f -n team-x -- curl -s -o /dev/null -w "%{http_code}\n" http://example.com
+  521  ls -lrt
+  522  kubectl  get ns 
+  523  kubectl --kubeconfig ~/.kube/config get ns
+  524  history 
+  525  gcloud container clusters get-credentials edmzc-sit --zone me-centra2-a --project gcpd-prj-svc-edmz-s
+  526  gcloud container clusters get-credentials edmzc-sit --zone me-centra2-a --project gcpd-prj-svc-edmz-sit
+  527  kubectl get ns
+  528  history > history.txt
